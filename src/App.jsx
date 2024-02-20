@@ -4,7 +4,7 @@ import Root, {
   loader as rootLoader,
 } from "./components/Root";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Login, { action as loginAction } from "./pages/Login";
 import SignUp, { action as signUpAction } from "./pages/SignUp";
 
 const router = createBrowserRouter([
@@ -26,6 +26,7 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+        action: loginAction,
       },
     ],
   },

@@ -5,34 +5,34 @@ import {
   useLocation,
   useNavigation,
 } from "react-router-dom";
-// import { login } from "../api/login";
+import { login } from "../api/login";
 
-// export const action = async ({ request }) => {
-//   const formData = await request.formData();
-//   const error = {};
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const error = {};
 
-//   const res = await login(formData);
+  const res = await login(formData);
 
-//   if (res.ok) {
-//     const data = await res.json();
-//     localStorage.setItem("jwt-token", data.token);
-//     localStorage.setItem("userId", data.userId);
-//     return redirect("/");
-//   }
-//   if (res.status === 401) {
-//     error.isLoginError = true;
-//     return error;
-//   }
-//   if (res.status === 400) {
-//     const data = await res.json();
-//     error.serverErrors = data.errors;
-//     return error;
-//   }
-//   if (res.status === 500) {
-//     error.isInternalError = true;
-//     return error;
-//   }
-// };
+  if (res.ok) {
+    const data = await res.json();
+    localStorage.setItem("author-jwt-token", data.token);
+
+    return redirect("/");
+  }
+  if (res.status === 401) {
+    error.isLoginError = true;
+    return error;
+  }
+  if (res.status === 400) {
+    const data = await res.json();
+    error.serverErrors = data.errors;
+    return error;
+  }
+  if (res.status === 500) {
+    error.isInternalError = true;
+    return error;
+  }
+};
 
 const Login = () => {
   const location = useLocation();
