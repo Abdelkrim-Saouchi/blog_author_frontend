@@ -1,30 +1,30 @@
 import { Form, redirect, useActionData, useNavigation } from "react-router-dom";
-// import { createUser } from "../api/createUser";
+import { createAuthor } from "../api/createAuthor";
 
-// export const action = async ({ request }) => {
-//   const formData = await request.formData();
-//   const error = {};
-//   const password = formData.get("password");
-//   const confirmation = formData.get("confirmation");
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const error = {};
+  const password = formData.get("password");
+  const confirmation = formData.get("confirmation");
 
-//   if (password !== confirmation) {
-//     error.isPasswordMismatch = true;
-//     return error;
-//   }
+  if (password !== confirmation) {
+    error.isPasswordMismatch = true;
+    return error;
+  }
 
-//   // otherwise create user
-//   const res = await createUser(formData);
+  // otherwise create author
+  const res = await createAuthor(formData);
 
-//   if (res.ok) {
-//     // if success redirect to home page
-//     return redirect("/login");
-//   } else {
-//     // if users inputs are not valid
-//     const data = await res.json();
-//     error.serverErrors = data.errors;
-//     return error;
-//   }
-// };
+  if (res.ok) {
+    // if success redirect to login page
+    return redirect("/login");
+  } else {
+    // if users inputs are not valid
+    const data = await res.json();
+    error.serverErrors = data.errors;
+    return error;
+  }
+};
 
 const SignUp = () => {
   const error = useActionData();

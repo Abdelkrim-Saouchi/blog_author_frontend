@@ -5,7 +5,7 @@ import Root, {
 } from "./components/Root";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
+import SignUp, { action as signUpAction } from "./pages/SignUp";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +21,7 @@ const router = createBrowserRouter([
       {
         path: "signup",
         element: <SignUp />,
+        action: signUpAction,
       },
       {
         path: "login",
