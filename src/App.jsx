@@ -3,7 +3,7 @@ import Root, {
   action as rootAction,
   loader as rootLoader,
 } from "./components/Root";
-import Home from "./pages/Home";
+import Home, { loader as homeLoader } from "./pages/Home";
 import Login, { action as loginAction } from "./pages/Login";
 import SignUp, { action as signUpAction } from "./pages/SignUp";
 
@@ -17,6 +17,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+        loader: homeLoader,
       },
       {
         path: "signup",
