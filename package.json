@@ -13,6 +13,7 @@
     "@iconify-json/game-icons": "^1.1.7",
     "@iconify-json/mdi": "^1.1.64",
     "@iconify-json/ph": "^1.1.11",
+    "@tinymce/tinymce-react": "^4.3.2",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

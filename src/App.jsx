@@ -6,6 +6,10 @@ import Root, {
 import Home, { loader as homeLoader } from "./pages/Home";
 import Login, { action as loginAction } from "./pages/Login";
 import SignUp, { action as signUpAction } from "./pages/SignUp";
+import WriteArticle, {
+  action as writeAction,
+  loader as writeLoader,
+} from "./pages/WriteArticle";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +32,12 @@ const router = createBrowserRouter([
         path: "login",
         element: <Login />,
         action: loginAction,
+      },
+      {
+        path: "write",
+        element: <WriteArticle />,
+        action: writeAction,
+        loader: writeLoader,
       },
     ],
   },
