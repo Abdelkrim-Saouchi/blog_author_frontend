@@ -9,8 +9,8 @@ export const loader = async () => {
 const Home = () => {
   const data = useLoaderData();
   console.log("data:", data);
-  const published = data.articles.filter((article) => article.published);
-  const unpublished = data.articles.filter((article) => !article.published);
+  const published = data.articles.filter((article) => !article.published);
+  const unpublished = data.articles.filter((article) => article.published);
 
   return (
     <main className="px-4 py-2 pt-4 md:px-40">
@@ -32,7 +32,7 @@ const Home = () => {
         <h2 className="border-b border-gray-200 text-3xl font-bold">
           Published articles:
         </h2>
-        <div>
+        <div className="my-4 grid grid-cols-1 gap-3 md:grid-cols-3">
           {unpublished.map((article) => (
             <ArticleCard
               key={article.id}
