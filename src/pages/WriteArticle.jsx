@@ -1,10 +1,11 @@
 import { Editor } from "@tinymce/tinymce-react";
-import { Form, useActionData, useLoaderData } from "react-router-dom";
+import { Form, redirect, useActionData, useLoaderData } from "react-router-dom";
+import Topics from "../components/Topics";
 import { hostname } from "../globals/hostname";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
-  console.log("formData:", Object.fromEntries(formData));
+
   const error = {};
   if (formData.get("title") === "") {
     error.message = "*Title must not be empty";
@@ -14,10 +15,15 @@ export const action = async ({ request }) => {
     error.message = "*Content must not be empty";
     return error;
   }
+  if (formData.get("topics") === "") {
+    error.message = "*Select at least one topic";
+    return error;
+  }
+
   const title = formData.get("title");
   const content = formData.get("content");
   const readTime = +formData.get("readTime");
-  const topics = [formData.get("Web_Dev")];
+  const topics = [...formData.get("topics").split(";")];
   const published = formData.get("published") === "true";
   const token = localStorage.getItem("author-jwt-token");
 
@@ -38,8 +44,7 @@ export const action = async ({ request }) => {
     });
 
     if (res.ok) {
-      const data = await res.json();
-      return data;
+      return redirect("/");
     }
 
     const data = await res.json();
@@ -60,7 +65,7 @@ export const loader = async () => {
       const data = await res.json();
       return data;
     }
-    return [];
+    return { topics: [] };
   } catch (err) {
     throw new Response("", { status: 500, statusText: "Get topics failed!" });
   }
@@ -69,6 +74,7 @@ export const loader = async () => {
 const WriteArticle = () => {
   const error = useActionData();
   const data = useLoaderData();
+
   console.log("data:", data);
 
   return (
@@ -81,8 +87,9 @@ const WriteArticle = () => {
           })}
         </ul>
       )}
+
       <Form method="post">
-        <div className="my-4 flex items-center gap-2 text-3xl">
+        <div className="my-4 flex items-center gap-2 rounded border border-slate-100 p-2 text-3xl shadow">
           <label htmlFor="title" className="font-bold">
             Title:
           </label>
@@ -91,7 +98,7 @@ const WriteArticle = () => {
             id="title"
             name="title"
             required
-            className="outline-none"
+            className="w-full outline-none"
           />
         </div>
         <div className="my-4 flex items-center gap-2 ">
@@ -103,36 +110,39 @@ const WriteArticle = () => {
             id="readTime"
             name="readTime"
             min={3}
+            defaultValue={3}
             required
-            className="outline-none"
+            className="border border-slate-100 pl-3 outline-none"
           />
         </div>
         <div className="my-4 flex items-center gap-2 ">
-          <label htmlFor="status" className="font-bold">
-            Status:
-          </label>
-          <select name="published" id="status" className="outline-none">
-            <option value={true}>Published</option>
-            <option value={false}>Unpublished</option>
-          </select>
+          <p className="font-bold">Status:</p>
+          <div className="flex items-center gap-3">
+            <div className="space-x-2">
+              <input
+                type="radio"
+                name="published"
+                id="published"
+                value={true}
+                defaultChecked
+              />
+              <label htmlFor="published">Published</label>
+            </div>
+            <div className="space-x-2">
+              <input
+                type="radio"
+                name="published"
+                id="unpublished"
+                value={false}
+              />
+              <label htmlFor="unpublished">Unpublished</label>
+            </div>
+          </div>
         </div>
         <div className="my-4 flex items-center gap-4">
-          <p>Topics:</p>
-          {data?.topics.map((topic) => (
-            <div key={topic._id} className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                name={topic.name.split(" ").join("_")}
-                id={topic.name.split(" ").join("_")}
-                value={topic._id}
-                required
-              />
-              <label htmlFor={topic.name.split(" ").join("_")}>
-                {topic.name}
-              </label>
-            </div>
-          ))}
+          <Topics data={data} />
         </div>
+
         <Editor
           textareaName="content"
           required
