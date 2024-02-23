@@ -44,25 +44,39 @@ const WriteArticle = () => {
   const [title, setTitle] = useState("");
   const contentEditorRef = useRef(null);
   const [content, setContent] = useState("");
-  console.log("content:", content);
+  const editorBtnRef = useRef(null);
+  const previewBtnRef = useRef(null);
+
   const togglePreview = (e) => {
     console.log(e.target.textContent);
     if (e.target.textContent === "Editor") {
       editorRef.current.classList.remove("hidden");
       previewRef.current.classList.add("hidden");
+      editorBtnRef.current.classList.add("bg-slate-400");
+      previewBtnRef.current.classList.remove("bg-slate-400");
     } else {
       editorRef.current.classList.add("hidden");
       previewRef.current.classList.remove("hidden");
+      editorBtnRef.current.classList.remove("bg-slate-400");
+      previewBtnRef.current.classList.add("bg-slate-400");
     }
   };
 
   return (
     <main className="flex flex-col px-4 py-2 pt-4 md:px-40">
       <div className="flex gap-1 self-center rounded-lg bg-slate-100  shadow-lg">
-        <button onClick={togglePreview} className="rounded-lg bg-slate-50 p-2">
+        <button
+          ref={editorBtnRef}
+          onClick={togglePreview}
+          className="rounded-lg bg-slate-400 p-2"
+        >
           Editor
         </button>
-        <button onClick={togglePreview} className="rounded-lg bg-slate-50 p-2">
+        <button
+          ref={previewBtnRef}
+          onClick={togglePreview}
+          className="rounded-lg bg-slate-50 p-2"
+        >
           preview
         </button>
       </div>
