@@ -1,7 +1,13 @@
 import { Editor } from "@tinymce/tinymce-react";
-import { Form, redirect, useActionData, useLoaderData } from "react-router-dom";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "react-router-dom";
+import { createArticle } from "../api/createArticle";
+import { getTopics } from "../api/getTopics";
 import Topics from "../components/Topics";
-import { hostname } from "../globals/hostname";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
@@ -20,62 +26,18 @@ export const action = async ({ request }) => {
     return error;
   }
 
-  const title = formData.get("title");
-  const content = formData.get("content");
-  const readTime = +formData.get("readTime");
-  const topics = [...formData.get("topics").split(";")];
-  const published = formData.get("published") === "true";
-  const token = localStorage.getItem("author-jwt-token");
-
-  try {
-    const res = await fetch(`${hostname}/api/v1/posts`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        title,
-        content,
-        readTime,
-        topics,
-        published,
-      }),
-    });
-
-    if (res.ok) {
-      return redirect("/");
-    }
-
-    const data = await res.json();
-    error.serverErrors = data.errors;
-    return error;
-  } catch (err) {
-    throw new Response("", {
-      status: 500,
-      statusText: "Create article failed!",
-    });
-  }
+  return await createArticle(formData, error);
 };
 
 export const loader = async () => {
-  try {
-    const res = await fetch(`${hostname}/api/v1/topics`);
-    if (res.ok) {
-      const data = await res.json();
-      return data;
-    }
-    return { topics: [] };
-  } catch (err) {
-    throw new Response("", { status: 500, statusText: "Get topics failed!" });
-  }
+  return await getTopics();
 };
 
 const WriteArticle = () => {
   const error = useActionData();
   const data = useLoaderData();
-
-  console.log("data:", data);
+  const navigation = useNavigation();
+  const busy = navigation.state === "submitting";
 
   return (
     <main className="px-4 py-2 pt-4 md:px-40">
@@ -167,9 +129,18 @@ const WriteArticle = () => {
         />
         <button
           type="submit"
+          disabled={busy}
           className="my-4 flex items-center gap-2 rounded-2xl bg-black p-3 text-white"
         >
-          Create article
+          {busy ? (
+            <>
+              {" "}
+              <span className="icon-[ph--spinner-gap-light] animate-spin"></span>
+              Creating{" "}
+            </>
+          ) : (
+            "Create Article"
+          )}
         </button>
       </Form>
     </main>
