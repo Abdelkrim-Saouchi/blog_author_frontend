@@ -175,8 +175,11 @@ const WriteArticle = () => {
       </div>
 
       <div ref={previewRef} className="my-4 flex hidden flex-col">
-        <h2 className="self-center text-2xl font-bold">{title}</h2>
-        <div dangerouslySetInnerHTML={{ __html: content }}></div>
+        <h2 className="mb-6 self-center text-3xl font-bold">{title}</h2>
+        <div
+          dangerouslySetInnerHTML={{ __html: content }}
+          className="prose max-w-full "
+        ></div>
       </div>
     </main>
   );
