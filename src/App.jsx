@@ -10,6 +10,7 @@ import WriteArticle, {
   action as writeAction,
   loader as writeLoader,
 } from "./pages/WriteArticle";
+import NewTopic, { action as topicAction } from "./pages/NewTopic";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,11 @@ const router = createBrowserRouter([
         element: <WriteArticle />,
         action: writeAction,
         loader: writeLoader,
+      },
+      {
+        path: "topics/new",
+        element: <NewTopic />,
+        action: topicAction,
       },
     ],
   },
