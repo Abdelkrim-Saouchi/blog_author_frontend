@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Topics = ({ data }) => {
   const menuRef = useRef(null);
@@ -29,10 +30,10 @@ const Topics = ({ data }) => {
   }, []);
 
   return (
-    <>
+    <div className="flex items-center gap-3">
       <p className="font-bold">Topics:</p>
       <input type="text" hidden defaultValue={topics.join(";")} name="topics" />
-      <div className="relative">
+      <div className="relative ">
         <button
           type="button"
           onClick={toggleTopicsMenu}
@@ -58,7 +59,10 @@ const Topics = ({ data }) => {
           ))}
         </ul>
       </div>
-    </>
+      <Link to={"/topics/new"} className="rounded bg-black p-1 text-white">
+        New topic
+      </Link>
+    </div>
   );
 };
 
