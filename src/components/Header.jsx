@@ -63,6 +63,11 @@ const Header = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/topics" className="hover:opacity-70 ">
+                  Topics
+                </Link>
+              </li>
+              <li>
                 <fetcher.Form method="post" action="/">
                   <button className="flex items-center gap-1 hover:opacity-70">
                     Logout
