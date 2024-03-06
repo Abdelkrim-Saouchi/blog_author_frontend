@@ -10,6 +10,7 @@ import {
 import Topics from "../components/Topics";
 import { getArticle } from "../api/getArticle";
 import { updateArticle } from "../api/updateArticle";
+import { getTopics } from "../api/getTopics";
 
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
@@ -32,7 +33,12 @@ export const action = async ({ request, params }) => {
 };
 
 export const loader = async ({ params }) => {
-  return await getArticle(params.articleId);
+  const [topicsData, article] = await Promise.all([
+    await getTopics(),
+    await getArticle(params.articleId),
+  ]);
+  article.topics = topicsData.topics;
+  return article;
 };
 
 const EditArticle = () => {
@@ -155,7 +161,7 @@ const EditArticle = () => {
             apiKey="tipmujbsdn0w9z77o2nmmsiqniyyv0zn1ee7ftkwfdahbna0"
             init={{
               plugins:
-                "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount asechange  linkchecker",
+                "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount  linkchecker",
               toolbar:
                 "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
               tinycomments_mode: "embedded",
