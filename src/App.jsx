@@ -17,6 +17,10 @@ import EditArticle, {
 } from "./pages/EditArticle";
 import DeleteArticle, { action as deleteAction } from "./pages/DeleteArticle";
 import TopicsPage, { loader as topicsLoader } from "./pages/TopicsPage";
+import EditTopic, {
+  loader as editTopicLoader,
+  action as editTopicAction,
+} from "./pages/EditTopic";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +59,12 @@ const router = createBrowserRouter([
         path: "topics/new",
         element: <NewTopic />,
         action: topicAction,
+      },
+      {
+        path: "topics/:topicId",
+        element: <EditTopic />,
+        loader: editTopicLoader,
+        action: editTopicAction,
       },
       {
         path: "articles/:articleId/edit",
