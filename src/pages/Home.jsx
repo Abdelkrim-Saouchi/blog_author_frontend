@@ -1,6 +1,32 @@
-import { useLoaderData } from "react-router-dom";
+import { redirect, useLoaderData } from "react-router-dom";
 import { getArticles } from "../api/getArticles";
 import ArticleCard from "../components/ArticleCard";
+import { hostname } from "../globals/hostname";
+
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const token = localStorage.getItem("author-jwt-token");
+  console.log("id:", formData.get("articleId"));
+
+  try {
+    const res = await fetch(
+      `${hostname}/api/v1/posts/${formData.get("articleId")}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    if (res.ok) {
+      return { ok: true };
+    }
+    return { ok: false };
+  } catch (err) {
+    throw new Response("", { status: 500, statusText: "Delete post failed" });
+  }
+};
 
 export const loader = async () => {
   return await getArticles();

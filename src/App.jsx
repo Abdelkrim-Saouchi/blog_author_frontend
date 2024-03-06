@@ -15,6 +15,7 @@ import EditArticle, {
   action as editAction,
   loader as editLoader,
 } from "./pages/EditArticle";
+import DeleteArticle, { action as deleteAction } from "./pages/DeleteArticle";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,11 @@ const router = createBrowserRouter([
         element: <EditArticle />,
         action: editAction,
         loader: editLoader,
+      },
+      {
+        path: "articles/:articleId/delete",
+        element: <DeleteArticle />,
+        action: deleteAction,
       },
     ],
   },

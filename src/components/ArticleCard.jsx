@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useFetcher } from "react-router-dom";
 
 const ArticleCard = ({ creationDate, title, content, articleId }) => {
   return (
@@ -19,6 +19,13 @@ const ArticleCard = ({ creationDate, title, content, articleId }) => {
           className="rounded bg-black p-2 text-white"
         >
           Edit
+        </Link>
+
+        <Link
+          to={`/articles/${articleId}/delete`}
+          className="rounded bg-black p-2 text-white"
+        >
+          Delete
         </Link>
       </div>
     </div>
