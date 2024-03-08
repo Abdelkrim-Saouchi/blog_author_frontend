@@ -2,5 +2,5 @@ import { create } from "zustand";
 
 export const useStore = create((set) => ({
   token: null,
-  setToken: (token) => set(() => ({ token })),
+  setToken: (token) => set({ token }),
 }));

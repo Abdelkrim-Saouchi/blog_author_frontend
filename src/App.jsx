@@ -21,6 +21,10 @@ import EditTopic, {
   loader as editTopicLoader,
   action as editTopicAction,
 } from "./pages/EditTopic";
+import ReadArticle, {
+  loader as readArticleLoader,
+  action as readArticleAction,
+} from "./pages/ReadArticle";
 
 const router = createBrowserRouter([
   {
@@ -76,6 +80,12 @@ const router = createBrowserRouter([
         path: "articles/:articleId/delete",
         element: <DeleteArticle />,
         action: deleteAction,
+      },
+      {
+        path: "articles/:articleId",
+        element: <ReadArticle />,
+        loader: readArticleLoader,
+        action: readArticleAction,
       },
     ],
   },
