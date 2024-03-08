@@ -21,6 +21,14 @@ const TopicsPage = () => {
           </Link>
         ))}
       </div>
+
+      <h2 className="text-2xl font-bold">Create Topic: </h2>
+      <Link
+        to="/topics/new"
+        className="my-4 block w-fit rounded-2xl bg-black p-3 text-white"
+      >
+        Create
+      </Link>
     </main>
   );
 };

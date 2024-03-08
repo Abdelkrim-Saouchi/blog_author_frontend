@@ -41,13 +41,6 @@ const EditTopic = () => {
 
   return (
     <main className="space-y-4 px-4 py-2 pt-4 md:px-40">
-      <h2 className="text-2xl font-bold">Create Topic: </h2>
-      <Link
-        to="/topics/new"
-        className="my-4 block w-fit rounded-2xl bg-black p-3 text-white"
-      >
-        Create
-      </Link>
       <h2 className="text-2xl font-bold">Update Topic:</h2>
       <p className="text-red-600">{data?.message}</p>
       <p className="text-red-600">{data?.serverError}</p>
