@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Comment = ({ comment }) => {
-  const [userId, setUserId] = useState(null);
   const [edit, setEdit] = useState(false);
   const menuRef = useRef(null);
 
@@ -16,13 +15,6 @@ const Comment = ({ comment }) => {
       setEdit(false);
     }
   };
-
-  useEffect(() => {
-    const id = localStorage.getItem("userId");
-    if (id) {
-      setUserId(id);
-    }
-  }, []);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleOutsideClick);
@@ -39,36 +31,34 @@ const Comment = ({ comment }) => {
             comment.author.firstName + " " + comment.author.lastName}
         </div>
         <div className="text-gray-500">{comment.creationDate}</div>
-        {comment.author._id === userId && (
-          <div className="ml-auto">
-            <button onClick={toggleEditMenu} className="font-bold">
-              ...
-            </button>
-            {edit && (
-              <div
-                ref={menuRef}
-                className="absolute flex -translate-x-full flex-col gap-2 rounded border border-gray-200 bg-white px-4 py-2 shadow-lg"
-              >
-                <div>
-                  <Link
-                    to={`comments/${comment._id}/update`}
-                    onClick={toggleEditMenu}
-                  >
-                    Update
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    to={`comments/${comment._id}/delete`}
-                    onClick={toggleEditMenu}
-                  >
-                    Delete
-                  </Link>
-                </div>
+        <div className="ml-auto">
+          <button onClick={toggleEditMenu} className="font-bold">
+            ...
+          </button>
+          {edit && (
+            <div
+              ref={menuRef}
+              className="absolute flex -translate-x-full flex-col gap-2 rounded border border-gray-200 bg-white px-4 py-2 shadow-lg"
+            >
+              <div>
+                <Link
+                  to={`comments/${comment._id}/update`}
+                  onClick={toggleEditMenu}
+                >
+                  Update
+                </Link>
               </div>
-            )}
-          </div>
-        )}
+              <div>
+                <Link
+                  to={`comments/${comment._id}/delete`}
+                  onClick={toggleEditMenu}
+                >
+                  Delete
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       <div>{comment.content}</div>
     </div>

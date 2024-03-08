@@ -25,6 +25,13 @@ import ReadArticle, {
   loader as readArticleLoader,
   action as readArticleAction,
 } from "./pages/ReadArticle";
+import UpdateComment, {
+  loader as commentLoader,
+  action as upCommentAction,
+} from "./components/UpdateComment";
+import DeleteComment, {
+  action as delCommentAction,
+} from "./components/DeleteComment";
 
 const router = createBrowserRouter([
   {
@@ -86,6 +93,19 @@ const router = createBrowserRouter([
         element: <ReadArticle />,
         loader: readArticleLoader,
         action: readArticleAction,
+        children: [
+          {
+            path: "comments/:commentId/update",
+            element: <UpdateComment />,
+            loader: commentLoader,
+            action: upCommentAction,
+          },
+          {
+            path: "comments/:commentId/delete",
+            element: <DeleteComment />,
+            action: delCommentAction,
+          },
+        ],
       },
     ],
   },
