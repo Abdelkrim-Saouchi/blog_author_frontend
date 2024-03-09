@@ -15,6 +15,7 @@ export const loader = () => {
 
 export const action = async () => {
   localStorage.removeItem("author-jwt-token");
+  localStorage.removeItem("author-exipresIn");
   return redirect("/");
 };
 
