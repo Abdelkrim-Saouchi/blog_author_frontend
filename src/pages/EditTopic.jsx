@@ -8,6 +8,7 @@ import {
 import { getTopic } from "../api/getTopic";
 import { updateTopic } from "../api/updateTopic";
 import { deleteTopic } from "../api/deleteTopic";
+import useAutoLogout from "../hooks/useAutoLogout";
 
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
@@ -38,6 +39,9 @@ const EditTopic = () => {
   const data = useActionData();
   const navigation = useNavigation();
   const busy = navigation.state === "submitting";
+
+  // logout automatically if jwt token is invalid
+  useAutoLogout();
 
   return (
     <main className="space-y-4 px-4 py-2 pt-4 md:px-40">

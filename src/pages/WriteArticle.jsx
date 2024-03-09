@@ -9,6 +9,7 @@ import {
 import { createArticle } from "../api/createArticle";
 import { getTopics } from "../api/getTopics";
 import Topics from "../components/Topics";
+import useAutoLogout from "../hooks/useAutoLogout";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
@@ -46,6 +47,9 @@ const WriteArticle = () => {
   const [content, setContent] = useState("");
   const editorBtnRef = useRef(null);
   const previewBtnRef = useRef(null);
+
+  // logout automatically if jwt token is invalid
+  useAutoLogout();
 
   const togglePreview = (e) => {
     console.log(e.target.textContent);

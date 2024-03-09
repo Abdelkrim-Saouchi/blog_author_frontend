@@ -3,6 +3,7 @@ import LikesCommentsBar from "../components/LikesCommentsBar";
 import CommentsSection from "../components/CommentsSection";
 import { getArticle } from "../api/getArticle";
 import { createComment } from "../api/createComment";
+import useAutoLogout from "../hooks/useAutoLogout";
 
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
@@ -26,6 +27,10 @@ export const loader = async ({ params }) => {
 
 const ReadArticle = () => {
   const article = useLoaderData();
+
+  // logout automatically if jwt token is invalid
+  useAutoLogout();
+
   return (
     <main className="relative flex flex-col items-center px-4 py-2 pt-4 text-xl">
       <div className="md:w-2/4">

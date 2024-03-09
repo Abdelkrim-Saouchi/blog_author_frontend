@@ -11,6 +11,7 @@ import Topics from "../components/Topics";
 import { getArticle } from "../api/getArticle";
 import { updateArticle } from "../api/updateArticle";
 import { getTopics } from "../api/getTopics";
+import useAutoLogout from "../hooks/useAutoLogout";
 
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
@@ -53,6 +54,9 @@ const EditArticle = () => {
   const [content, setContent] = useState(data.content);
   const editorBtnRef = useRef(null);
   const previewBtnRef = useRef(null);
+
+  // logout automatically if jwt token is invalid
+  useAutoLogout();
 
   const togglePreview = (e) => {
     console.log(e.target.textContent);

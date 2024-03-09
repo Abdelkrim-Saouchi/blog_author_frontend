@@ -2,6 +2,7 @@ import { redirect, useLoaderData } from "react-router-dom";
 import { getArticles } from "../api/getArticles";
 import ArticleCard from "../components/ArticleCard";
 import { hostname } from "../globals/hostname";
+import useAutoLogout from "../hooks/useAutoLogout";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
@@ -39,6 +40,9 @@ const Home = () => {
     data.articles?.filter((article) => !article.published) || [];
   const unpublished =
     data.articles?.filter((article) => article.published) || [];
+
+  // logout automatically if jwt token is invalid
+  useAutoLogout();
 
   return (
     <main className="px-4 py-2 pt-4 md:px-40">

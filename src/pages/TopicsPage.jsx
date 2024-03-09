@@ -1,5 +1,6 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { getTopics } from "../api/getTopics";
+import useAutoLogout from "../hooks/useAutoLogout";
 
 export const loader = async () => {
   return await getTopics();
@@ -7,6 +8,10 @@ export const loader = async () => {
 
 const TopicsPage = () => {
   const { topics } = useLoaderData();
+
+  // logout automatically if jwt token is invalid
+  useAutoLogout();
+
   return (
     <main className="space-y-4 px-4 py-2 pt-4 md:px-40">
       <h2 className="text-2xl font-bold">Topics List:</h2>

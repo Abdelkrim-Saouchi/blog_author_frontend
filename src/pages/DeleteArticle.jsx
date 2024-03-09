@@ -1,5 +1,6 @@
 import { Form, useNavigate, useNavigation } from "react-router-dom";
 import { deleteArticle } from "../api/delelteArticle";
+import useAutoLogout from "../hooks/useAutoLogout";
 
 export const action = async ({ params }) => {
   return await deleteArticle(params.articleId);
@@ -10,6 +11,9 @@ const DeleteArticle = () => {
   const navigation = useNavigation();
   const busy = navigation.state === "submitting";
   const loading = navigation.state === "loading";
+
+  // logout automatically if jwt token is invalid
+  useAutoLogout();
 
   const cancel = () => {
     navigate(-1, { replace: true });

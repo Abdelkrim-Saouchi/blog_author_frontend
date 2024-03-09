@@ -1,5 +1,6 @@
 import { Form, redirect, useActionData, useNavigation } from "react-router-dom";
 import { hostname } from "../globals/hostname";
+import useAutoLogout from "../hooks/useAutoLogout";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
@@ -40,6 +41,9 @@ export const action = async ({ request }) => {
 
 const NewTopic = () => {
   const error = useActionData();
+
+  // logout automatically if jwt token is invalid
+  useAutoLogout();
 
   return (
     <main className="px-4 py-2 pt-4 md:px-40">

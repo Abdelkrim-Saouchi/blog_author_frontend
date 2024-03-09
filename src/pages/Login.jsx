@@ -6,6 +6,7 @@ import {
   useNavigation,
 } from "react-router-dom";
 import { login } from "../api/login";
+import ms from "ms";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
@@ -16,6 +17,8 @@ export const action = async ({ request }) => {
   if (res.ok) {
     const data = await res.json();
     localStorage.setItem("author-jwt-token", data.token);
+    const authorExpiresIn = Date.now() + ms(data.expiresIn);
+    localStorage.setItem("author-expiresIn", authorExpiresIn);
 
     return redirect("/");
   }
