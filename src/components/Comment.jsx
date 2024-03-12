@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import PseudoImage from "./PseudoImage";
 
 const Comment = ({ comment }) => {
   const [edit, setEdit] = useState(false);
@@ -24,9 +25,16 @@ const Comment = ({ comment }) => {
   }, []);
 
   return (
-    <div className="rounded border border-gray-200 p-3">
+    <div className="space-y-2 rounded border border-gray-200 p-3">
       <div className="relative flex gap-2 text-lg">
-        <div className="font-bold">
+        <div className="flex items-center gap-2 font-bold">
+          <PseudoImage
+            firstLetter={
+              comment.author.username
+                ? comment.author.username[0].toUpperCase()
+                : comment.author.firstName[0].toUpperCase()
+            }
+          />
           {comment.author?.username ||
             comment.author.firstName + " " + comment.author.lastName}
         </div>
