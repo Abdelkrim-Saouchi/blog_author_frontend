@@ -54,6 +54,9 @@ const ReadArticle = () => {
           likesNumber={article.likes.length}
           commentsNumber={article.comments.length}
         />
+        {article.imgURL && (
+          <img src={article.imgURL} alt="Article" className="mb-8" />
+        )}
         <div
           dangerouslySetInnerHTML={{ __html: article.content }}
           className="prose max-w-full leading-relaxed"
