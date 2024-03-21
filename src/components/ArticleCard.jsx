@@ -1,13 +1,14 @@
 import PropTypes from "prop-types";
-import { Link, useFetcher } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const ArticleCard = ({ creationDate, title, content, articleId }) => {
+const ArticleCard = ({ imgURL, creationDate, title, content, articleId }) => {
   return (
     <div className="flex flex-col gap-3 rounded-lg border border-gray-200 p-4 shadow-lg">
+      {imgURL && <img src={imgURL} alt="article" />}
       <p>{creationDate}</p>
-      <h3 className="text-2xl font-bold">{title}</h3>
+      <h3 className="text-xl font-bold">{title}</h3>
       <p className="line-clamp-3">{content.replace(/(<([^>]+)>)/gi, "")}</p>
-      <div className="flex gap-4">
+      <div className="mt-auto flex gap-4">
         <Link
           to={`/articles/${articleId}`}
           className="rounded bg-black p-2 text-white"
@@ -33,6 +34,7 @@ const ArticleCard = ({ creationDate, title, content, articleId }) => {
 };
 
 ArticleCard.propTypes = {
+  imgURL: PropTypes.any,
   creationDate: PropTypes.string,
   title: PropTypes.string,
   content: PropTypes.string,

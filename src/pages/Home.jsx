@@ -55,6 +55,7 @@ const Home = () => {
             published.map((article) => (
               <ArticleCard
                 key={article.id}
+                imgURL={article.imgURL}
                 creationDate={article.creationDate}
                 title={article.title}
                 content={article.content}
@@ -75,6 +76,7 @@ const Home = () => {
             unpublished.map((article) => (
               <ArticleCard
                 key={article.id}
+                imgURL={article.imgURL}
                 creationDate={article.creationDate}
                 title={article.title}
                 content={article.content}
