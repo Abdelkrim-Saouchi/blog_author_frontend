@@ -1,5 +1,5 @@
 import { Editor } from "@tinymce/tinymce-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Form,
   useActionData,
@@ -54,6 +54,8 @@ const EditArticle = () => {
   const [content, setContent] = useState(data.content);
   const editorBtnRef = useRef(null);
   const previewBtnRef = useRef(null);
+  const [base64String, setBase64String] = useState("");
+  const [imgURL, setImgURL] = useState(null);
 
   // logout automatically if jwt token is invalid
   useAutoLogout();
@@ -73,6 +75,21 @@ const EditArticle = () => {
     }
   };
 
+  const handleFileChange = (e) => {
+    setImgURL(null);
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setBase64String(reader.result);
+    };
+    reader.readAsDataURL(file);
+    setImgURL(URL.createObjectURL(file));
+  };
+
+  useEffect(() => {
+    return () => URL.revokeObjectURL(imgURL);
+  }, [imgURL]);
+
   return (
     <main className="flex flex-col px-4 py-2 pt-4 md:px-40">
       <div className="flex gap-1 self-center rounded-lg bg-slate-100  shadow-lg">
@@ -86,7 +103,7 @@ const EditArticle = () => {
         <button
           ref={previewBtnRef}
           onClick={togglePreview}
-          className="rounded-lg bg-slate-50 p-2"
+          className="rounded-lg p-2"
         >
           preview
         </button>
@@ -115,6 +132,20 @@ const EditArticle = () => {
               required
               className="w-full outline-none"
             />
+          </div>
+          <div className="my-4 flex items-center gap-2 ">
+            <label htmlFor="img" className="font-bold">
+              Image:
+            </label>
+            <input
+              type="file"
+              id="img"
+              name="imgFile"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="file:mx-2 file:cursor-pointer file:rounded-md file:bg-black file:px-4 file:py-1 file:text-white file:hover:opacity-70"
+            />
+            <input type="text" name="file" defaultValue={base64String} hidden />
           </div>
           <div className="my-4 flex items-center gap-2 ">
             <label htmlFor="readTime" className="font-bold">
@@ -202,6 +233,7 @@ const EditArticle = () => {
 
       <div ref={previewRef} className="my-4 flex hidden flex-col">
         <h2 className="mb-6 self-center text-3xl font-bold">{title}</h2>
+        {imgURL && <img src={imgURL} alt="uploaded" />}
         <div
           dangerouslySetInnerHTML={{ __html: content }}
           className="prose max-w-full "
