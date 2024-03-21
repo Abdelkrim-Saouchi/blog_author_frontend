@@ -31,6 +31,10 @@ export const action = async ({ request }) => {
     error.message = "*Select image for the article";
     return error;
   }
+  if (!formData.get("imgFile").includes("image")) {
+    error.message = "*File must be image only";
+    return error;
+  }
 
   return await createArticle(formData, error);
 };
@@ -131,13 +135,17 @@ const WriteArticle = () => {
             />
           </div>
           <div className="my-4 flex items-center gap-2 ">
-            <label htmlFor="img">Image:</label>
+            <label htmlFor="img" className="font-bold">
+              Image:
+            </label>
             <input
               type="file"
               id="img"
               name="file"
               required
+              accept="image/*"
               onChange={handleFileChange}
+              className="file:mx-2 file:cursor-pointer file:rounded-md file:bg-black file:px-4 file:py-1 file:text-white file:hover:opacity-70"
             />
             <input
               type="text"
