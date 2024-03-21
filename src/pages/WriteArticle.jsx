@@ -1,5 +1,5 @@
 import { Editor } from "@tinymce/tinymce-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Form,
   useActionData,
@@ -27,6 +27,10 @@ export const action = async ({ request }) => {
     error.message = "*Select at least one topic";
     return error;
   }
+  if (formData.get("imgFile") === "") {
+    error.message = "*Select image for the article";
+    return error;
+  }
 
   return await createArticle(formData, error);
 };
@@ -47,6 +51,8 @@ const WriteArticle = () => {
   const [content, setContent] = useState("");
   const editorBtnRef = useRef(null);
   const previewBtnRef = useRef(null);
+  const [base64String, setBase64String] = useState("");
+  const [imgURL, setImgURL] = useState(null);
 
   // logout automatically if jwt token is invalid
   useAutoLogout();
@@ -66,6 +72,21 @@ const WriteArticle = () => {
     }
   };
 
+  const handleFileChange = (e) => {
+    setImgURL(null);
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setBase64String(reader.result);
+    };
+    reader.readAsDataURL(file);
+    setImgURL(URL.createObjectURL(file));
+  };
+
+  useEffect(() => {
+    return () => URL.revokeObjectURL(imgURL);
+  }, [imgURL]);
+
   return (
     <main className="flex flex-col px-4 py-2 pt-4 md:px-40">
       <div className="flex gap-1 self-center rounded-lg bg-slate-100  shadow-lg">
@@ -79,7 +100,7 @@ const WriteArticle = () => {
         <button
           ref={previewBtnRef}
           onClick={togglePreview}
-          className="rounded-lg bg-slate-50 p-2"
+          className="rounded-lg p-2"
         >
           preview
         </button>
@@ -107,6 +128,22 @@ const WriteArticle = () => {
               onChange={(e) => setTitle(e.target.value)}
               required
               className="w-full outline-none"
+            />
+          </div>
+          <div className="my-4 flex items-center gap-2 ">
+            <label htmlFor="img">Image:</label>
+            <input
+              type="file"
+              id="img"
+              name="file"
+              required
+              onChange={handleFileChange}
+            />
+            <input
+              type="text"
+              name="imgFile"
+              defaultValue={base64String}
+              hidden
             />
           </div>
           <div className="my-4 flex items-center gap-2 ">
@@ -194,6 +231,7 @@ const WriteArticle = () => {
 
       <div ref={previewRef} className="my-4 flex hidden flex-col">
         <h2 className="mb-6 self-center text-3xl font-bold">{title}</h2>
+        {imgURL && <img src={imgURL} alt="uploaded" />}
         <div
           dangerouslySetInnerHTML={{ __html: content }}
           className="prose max-w-full "

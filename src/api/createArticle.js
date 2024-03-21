@@ -7,6 +7,7 @@ export const createArticle = async (formData, error) => {
   const readTime = +formData.get("readTime");
   const topics = [...formData.get("topics").split(";")];
   const published = formData.get("published") === "true";
+  const fileString = formData.get("imgFile");
   const token = localStorage.getItem("author-jwt-token");
 
   try {
@@ -22,6 +23,7 @@ export const createArticle = async (formData, error) => {
         readTime,
         topics,
         published,
+        file: fileString,
       }),
     });
 
